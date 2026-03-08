@@ -1,22 +1,45 @@
 import csv
+import random
+from datetime import datetime, timedelta
 
-rows = [
-    ["timestamp", "user", "ip", "country", "device", "result"],
+users = ["alice", "bob", "charlie", "dana", "eve"]
 
-    ["2026-03-01 08:00", "alice", "10.1.1.1", "USA", "Chrome", "success"],
-    ["2026-03-01 08:04", "alice", "185.220.101.1", "Germany", "Chrome", "success"],
+countries = ["USA", "Germany", "Brazil", "UK", "Canada"]
 
-    ["2026-03-01 09:10", "bob", "10.1.1.5", "USA", "iPhone", "failed"],
-    ["2026-03-01 09:11", "bob", "10.1.1.5", "USA", "iPhone", "failed"],
-    ["2026-03-01 09:12", "bob", "10.1.1.5", "USA", "iPhone", "failed"],
-    ["2026-03-01 09:13", "bob", "10.1.1.5", "USA", "iPhone", "failed"],
-    ["2026-03-01 09:14", "bob", "10.1.1.5", "USA", "iPhone", "failed"],
+devices = ["Chrome", "Firefox", "iPhone", "Android", "Windows"]
 
-    ["2026-03-01 02:30", "charlie", "77.91.124.55", "Germany", "Firefox", "success"],
-
-    ["2026-03-01 12:00", "dana", "44.211.90.3", "USA", "Windows-Laptop", "success"],
-    ["2026-03-01 12:02", "dana", "203.0.113.99", "Brazil", "Linux", "success"]
+ips = [
+    "8.8.8.8",
+    "1.1.1.1",
+    "185.220.101.1",
+    "44.211.90.3",
+    "77.91.124.55"
 ]
+
+rows = [["timestamp", "user", "ip", "country", "device", "result"]]
+
+start_time = datetime(2026, 3, 1, 8, 0)
+
+for i in range(500):
+
+    user = random.choice(users)
+    ip = random.choice(ips)
+    country = random.choice(countries)
+    device = random.choice(devices)
+
+    # Mostly successful logins
+    result = random.choices(["success", "failed"], weights=[0.9, 0.1])[0]
+
+    timestamp = start_time + timedelta(minutes=random.randint(0, 5000))
+
+    rows.append([
+        timestamp.strftime("%Y-%m-%d %H:%M"),
+        user,
+        ip,
+        country,
+        device,
+        result
+    ])
 
 file = open("login_logs.csv", "w", newline="")
 writer = csv.writer(file)
@@ -26,4 +49,4 @@ for row in rows:
 
 file.close()
 
-print("login_logs.csv created successfully.")
+print("Generated 500 login events.")
